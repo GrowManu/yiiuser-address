@@ -19,7 +19,7 @@ class m210408_135054_address extends Migration {
 
         $this->createTable('{{%address}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->string(25)->notNull()->unique(),
+            'user_id' => $this->string(25)->notNull(),
             'postcode' => $this->integer(11)->notNull(),
             'country' => $this->string(25)->notNull(),
             'city' => $this->string(30)->notNull(),

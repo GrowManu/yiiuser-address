@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use Yii;
 
 /**
  * This is the model class for table "address".
@@ -34,9 +33,8 @@ class Address extends \yii\db\ActiveRecord
         return[ 
             [['postcode', 'country', 'city', 'street', 'house_number'], 'required'],
             [['postcode'], 'integer', 'max' => 9999999999],
-            [['country'], 'string', 'max' => 25],
+            [['country', 'user_id'], 'string', 'max' => 25],
             [['city', 'street'], 'string', 'max' => 30],
-            [['user_id'], 'string', 'max' => 30,],
             [['house_number'], 'string', 'max' => 20],
             [['apartment_number'], 'string', 'max' => 15],
             ];
@@ -49,7 +47,7 @@ class Address extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            //'user_id' => 'User ID',
             'postcode' => 'Postcode',
             'country' => 'Country',
             'city' => 'City',

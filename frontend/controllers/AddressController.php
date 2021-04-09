@@ -37,7 +37,7 @@ class AddressController extends Controller
     public function actionIndex()
     {
         $searchModel = new AddressSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchone(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
