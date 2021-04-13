@@ -26,6 +26,7 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface {
 
     const STATUS_DELETED = 0;
+    const STATUS_BANNED = 5;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
@@ -51,7 +52,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED, self::STATUS_BANNED]],
             
             ['email', 'trim'],
             ['email', 'required'],
@@ -75,8 +76,13 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
+    // on users
     public static function findIdentity($id) {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+    }
+    // on banned users
+    public static function findBanidentity($id) {
+        return static::findOne(['id' => $id, 'status' => self::STATUS_BANNED]);
     }
 
     /**
@@ -92,8 +98,14 @@ class User extends ActiveRecord implements IdentityInterface {
      * @param string $username
      * @return static|null
      */
+    //find user
     public static function findByUsername($username) {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+    
+    //find banned user
+    public static function findByBanUsername($username) {
+        return static::findOne(['username' => $username, 'status' => self::STATUS_BANNED]);
     }
 
     /**

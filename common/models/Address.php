@@ -57,7 +57,6 @@ class Address extends \yii\db\ActiveRecord
         ];
     }
     
-    //Связь
     public function getUser() {
         return $this->hasOne(User::className(), ['username' => 'user_id']);
     }    

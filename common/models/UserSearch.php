@@ -16,7 +16,7 @@ class UserSearch extends User {
      */
     public function rules() {
         return [
-            [['id'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['username', 'name', 'surname'], 'string'],
         ];
     }
@@ -57,6 +57,68 @@ class UserSearch extends User {
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+        ]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
+                ->andFilterWhere(['like', 'name', $this->name])
+                ->andFilterWhere(['like', 'surname', $this->surname]);
+
+        return $dataProvider;
+    }
+    
+        public function search_banned($params) {
+        $query = User::find()->andWhere(['status' => 5]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->pagination = ['pageSize' => 10];
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'status' => $this->status,
+        ]);
+
+        $query->andFilterWhere(['like', 'username', $this->username])
+                ->andFilterWhere(['like', 'name', $this->name])
+                ->andFilterWhere(['like', 'surname', $this->surname]);
+
+        return $dataProvider;
+    }
+    
+        public function search_notbanned($params) {
+        $query = User::find()->andWhere(['status' => 10]);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->pagination = ['pageSize' => 10];
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

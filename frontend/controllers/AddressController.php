@@ -45,7 +45,7 @@ class AddressController extends Controller
         ]);
     }
     
-    //Наши встроеные мазафака экшенны 
+     
     public function actionMyaddresses(){
         $searchModel = new AddressSearch();
         $dataProvider = $searchModel->searchone(Yii::$app->request->queryParams);

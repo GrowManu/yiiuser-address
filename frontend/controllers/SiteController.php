@@ -14,8 +14,6 @@ use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-use yii\helpers\Url;
 use common\models\User;
 
 /**
@@ -33,7 +31,7 @@ class SiteController extends Controller {
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -88,9 +86,12 @@ class SiteController extends Controller {
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->redirect('area');
-        } else {
+        }elseif($model->load(Yii::$app->request->post()) && $model->ban()) {
+            return $this->render('ban');
+        }else {
             $model->password = '';
 
             return $this->render('login', [
@@ -98,9 +99,8 @@ class SiteController extends Controller {
             ]);
         }
     }
-    // Личный кабинет
+    
     public function actionArea() {
-       // $model = new User;
        $model = User::findIdentity(Yii::$app->user->id);
         return $this->render('area', [
                     'model' => $model,
